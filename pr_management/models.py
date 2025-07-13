@@ -8,13 +8,16 @@ from django.utils.translation import gettext_lazy as _
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     email = models.EmailField(unique=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
+    
+    USERNAME_FIELD = 'username'  # Keep username as login field
+    REQUIRED_FIELDS = ['email']  # Email required when creating superuser
 
     class Meta:
         verbose_name = _('user')
+        verbose_name_plural = _('users')
         
-        def __str__(self):
-            return self.username or str(self.id)[:8]
+    def __str__(self):
+        return self.username or str(self.id)[:8]
 
 class Project(BaseModel):
     name = models.CharField(max_length=255, help_text=_("What is the name of the project?"))
@@ -22,8 +25,10 @@ class Project(BaseModel):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects', help_text=_("Who is the owner of the project?"))
 
     class Meta:
-        def __str__(self):
-            return self.name
+        pass
+        
+    def __str__(self):
+        return self.name
 
 
 class ProjectMember(models.Model):
@@ -61,8 +66,10 @@ class Task(BaseModel):
     due_date = models.DateTimeField(_("Expiry Date"), help_text=_("What is the expiry date of the task?"))
 
     class Meta:
-        def __str__(self):
-            return self.title
+        pass
+        
+    def __str__(self):
+        return self.title
         
         
 class Comment(BaseModel):
@@ -71,5 +78,7 @@ class Comment(BaseModel):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='comments', help_text=_("Which task does this comment belong to?"))
 
     class Meta:
-        def __str__(self):
-            return self.content[:20]
+        pass
+        
+    def __str__(self):
+        return self.content[:20]
