@@ -2,6 +2,8 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
+from .jazzmin_opts import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -184,10 +186,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
-STATIC_FILES_DIRS = (
-    BASE_DIR / 'static',
+STATICFILES_DIRS = [
     BASE_DIR / 'assets',
-)
+]
 
 
 # media root
@@ -222,3 +223,7 @@ LOGGING = {
         },
     },
 }
+
+# For designing the admin portal with jazzmin
+JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
+JAZZMIN_UI_TWEAKS = JAZZMIN_UI_TWEAKS
