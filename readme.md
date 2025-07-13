@@ -23,11 +23,13 @@ A Django REST Framework-based project management system that provides comprehens
 
 ### Quick Setup (Recommended)
 
-For a fast, automated setup, simply run:
+**For Linux/macOS users**, for a fast, automated setup, simply run:
 
 ```bash
 bash setup.sh
 ```
+
+**For Windows users**: The bash script may not work directly. Please follow the [Manual Installation](#manual-installation) steps below.
 
 This single command will:
 - Create virtual environment
@@ -45,7 +47,7 @@ The server will start automatically at `http://localhost:8000/` with all credent
 
 ### Manual Installation
 
-If you prefer manual setup:
+If you prefer manual setup or are using Windows:
 
 1. **Clone and navigate to the project**:
    ```bash
