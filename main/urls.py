@@ -28,12 +28,15 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    path('', include('pr_management.urls')),
+    path('pr/', include('pr_management.urls')),
     
     # Authentication endpoints
-    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
+    path('auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    # API Documentation
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
 
