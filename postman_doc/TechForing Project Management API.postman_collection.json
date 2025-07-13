@@ -1,0 +1,3253 @@
+{
+	"info": {
+		"_postman_id": "34d9ce3b-8215-44d6-916d-f0e37173e503",
+		"name": "TechForing Project Management API",
+		"description": "# TechForing Project Management Tool API\n\nA comprehensive project management REST API that enables teams to collaborate effectively on projects. This API provides complete CRUD operations for managing users, projects, tasks, and comments.\n\n## Features\n\n- **User Management**: Registration, authentication, and profile management\n    \n- **Project Management**: Create, manage, and organize projects\n    \n- **Task Management**: Full task lifecycle with assignments and status tracking\n    \n- **Comment System**: Collaborative commenting on tasks\n    \n- **JWT Authentication**: Secure token-based authentication\n    \n\n## 📋 Database Tables\n\n### Users Table\n\n- **id**: UUID primary key\n    \n- **username**: Unique username for login\n    \n- **email**: User email address\n    \n- **first_name**: User's first name (optional)\n    \n- **last_name**: User's last name (optional)\n    \n- **date_joined**: Account creation timestamp\n    \n- **password**: Encrypted password\n    \n\n### Projects Table\n\n- **id**: UUID primary key\n    \n- **name**: Project name\n    \n- **description**: Project description\n    \n- **owner**: Foreign key to User (project creator)\n    \n- **created_at**: Project creation timestamp\n    \n- **updated_at**: Last modification timestamp\n    \n\n### Tasks Table\n\n- **id**: UUID primary key\n    \n- **title**: Task title\n    \n- **description**: Detailed task description\n    \n- **status**: Task status (To Do, In Progress, Done)\n    \n- **priority**: Task priority (Low, Medium, High)\n    \n- **assigned_to**: Foreign key to User (task assignee)\n    \n- **project**: Foreign key to Project\n    \n- **due_date**: Task deadline\n    \n- **created_at**: Task creation timestamp\n    \n- **updated_at**: Last modification timestamp\n    \n\n### Comments Table\n\n- **id**: UUID primary key\n    \n- **content**: Comment text content\n    \n- **user**: Foreign key to User (comment author)\n    \n- **task**: Foreign key to Task\n    \n- **created_at**: Comment creation timestamp\n    \n- **updated_at**: Last modification timestamp\n    \n\n### Project Members Table\n\n- **id**: UUID primary key\n    \n- **project**: Foreign key to Project\n    \n- **user**: Foreign key to User\n    \n- **role**: Member role in project\n    \n\n## Usage\n\n1. Register a new user or login with existing credentials\n    \n2. Create projects and invite team members\n    \n3. Create and assign tasks within projects\n    \n4. Add comments to tasks for collaboration\n    \n5. Track progress and manage project lifecycle\n    \n\n## Authentication\n\nMost endpoints require JWT token authentication. Include the token in the Authorization header as 'Bearer {token}'.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42834179"
+	},
+	"item": [
+		{
+			"name": "👤 User Management",
+			"item": [
+				{
+					"name": "Register New User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"\r",
+									"// pm.collectionVariables.set(\"access_token\", res['access']);\r",
+									"// pm.collectionVariables.set(\"refresh_token\", res['refresh']);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "techforing",
+									"description": "Unique username for the new user account (required)",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Techforing.123",
+									"description": "Password for the user account (required)",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "abc@gmail.com",
+									"description": "Email address for the user account (required)",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Tech",
+									"description": "First name of the user",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Foring",
+									"description": "Last name of the user",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/users/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"users",
+								""
+							]
+						},
+						"description": "Creates a new user account in the system. This endpoint allows public registration without authentication. The password will be securely hashed before storage."
+					},
+					"response": [
+						{
+							"name": "201 Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "techforing",
+											"description": "Unique username for the new user account (required)",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Techforing.123",
+											"description": "Password for the user account (required)",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "abc@gmail.com",
+											"description": "Email address for the user account (required)",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "Tech",
+											"description": "First name of the user",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Foring",
+											"description": "Last name of the user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/users/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"users",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:09:27 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "178"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"66cf848c-95bd-44b8-832e-d851ebe946b8\",\n    \"username\": \"techforing\",\n    \"email\": \"abc@gmail.com\",\n    \"first_name\": \"Tech\",\n    \"last_name\": \"Foring\",\n    \"date_joined\": \"2025-07-13T17:09:27.409471Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"\r",
+									"pm.collectionVariables.set(\"access_token\", res['access']);\r",
+									"pm.collectionVariables.set(\"refresh_token\", res['refresh']);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "techforing",
+									"description": "Username of the user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Techforing.123",
+									"description": "Password set by the user",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login",
+								""
+							]
+						},
+						"description": "Authenticates a user and returns JWT access and refresh tokens. Use the access token for subsequent API calls by including it in the Authorization header as 'Bearer {token}'."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "techforing",
+											"description": "Username of the user",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Techforing.123",
+											"description": "Password set by the user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:10:47 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "582"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1MzI5MDY0NywiaWF0IjoxNzUyNDI2NjQ3LCJqdGkiOiJiMjk0ZTU0MmQyMGI0OGYzOGNlNTIyNDA2ODkwNWQ5ZiIsInVzZXJfaWQiOiI2NmNmODQ4Yy05NWJkLTQ0YjgtODMyZS1kODUxZWJlOTQ2YjgifQ.N27ED_BBQTNsTpDyPwXflwPsKTrG_0SO9oVlH0UrUx0\",\n    \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyODU4NjQ3LCJpYXQiOjE3NTI0MjY2NDcsImp0aSI6IjAzY2M0ZTk4OTg4MjQ0MzJiMWZmYTc4ZDgzMGQ4MGE0IiwidXNlcl9pZCI6IjY2Y2Y4NDhjLTk1YmQtNDRiOC04MzJlLWQ4NTFlYmU5NDZiOCJ9.VdafNMiDSiZTBpwKO0wTh-QB8rykm-c7PFH6vEbJ1Ao\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pr/users/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"users",
+								""
+							]
+						},
+						"description": "Retrieves a paginated list of all registered users in the system. Requires authentication. Useful for administrative purposes and user management."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/app/users/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"app",
+										"users",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1200"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 27 Dec 2024 02:03:25 GMT"
+								},
+								{
+									"key": "Ngrok-Agent-Ips",
+									"value": "2a09:bac5:483:1028::19c:16b"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.8"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"fa7ad626-9b45-4593-8faf-31b9e7920c9a\",\n        \"username\": \"shamim\",\n        \"email\": \"shamim@buildnow.sa\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"date_joined\": \"2024-12-26T14:29:26.240306Z\"\n    },\n    {\n        \"id\": \"6a6f2a81-13a7-42dc-a454-f3580c05a2b3\",\n        \"username\": \"shamim121\",\n        \"email\": \"abc@gmail.coma\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"date_joined\": \"2024-12-27T01:43:45.795642Z\"\n    },\n    {\n        \"id\": \"b11a9231-f078-4a91-8e37-eeea489415c8\",\n        \"username\": \"shamim1\",\n        \"email\": \"ab1c@gmail.coma\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"date_joined\": \"2024-12-27T01:46:51.204706Z\"\n    },\n    {\n        \"id\": \"a409ac25-78a7-4f6e-8af6-5be125c4b652\",\n        \"username\": \"shamim11\",\n        \"email\": \"ab1c@gmail.coma1\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"date_joined\": \"2024-12-27T01:48:06.514748Z\"\n    },\n    {\n        \"id\": \"9e22928d-9347-4879-9897-06931baeac40\",\n        \"username\": \"shamim111\",\n        \"email\": \"ab1c@gmail.coma11\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"date_joined\": \"2024-12-27T01:52:19.995010Z\"\n    },\n    {\n        \"id\": \"8f094e5e-0ddf-4467-aea5-565e4fda1112\",\n        \"username\": \"shamim1113\",\n        \"email\": \"ab1c@gmail.coma111\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"date_joined\": \"2024-12-27T01:54:24.627792Z\"\n    },\n    {\n        \"id\": \"b2f7342c-2ed3-444f-84f0-58126809de07\",\n        \"username\": \"shamim11131\",\n        \"email\": \"a1b1c@gmail.coma111\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"date_joined\": \"2024-12-27T01:59:39.276342Z\"\n    }\n]"
+						},
+						{
+							"name": "403 Forbidden",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pr/users/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"users",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:13:25 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get User Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pr/users/:user_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"users",
+								":user_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "66cf848c-95bd-44b8-832e-d851ebe946b8"
+								}
+							]
+						},
+						"description": "Get user details"
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pr/users/:user_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"users",
+										":user_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "66cf848c-95bd-44b8-832e-d851ebe946b8"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:14:16 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "178"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"66cf848c-95bd-44b8-832e-d851ebe946b8\",\n    \"username\": \"techforing\",\n    \"email\": \"abc@gmail.com\",\n    \"first_name\": \"Tech\",\n    \"last_name\": \"Foring\",\n    \"date_joined\": \"2025-07-13T17:09:27.409471Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/users/:user_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"users",
+								":user_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "66cf848c-95bd-44b8-832e-d851ebe946b8"
+								}
+							]
+						},
+						"description": "Delete user"
+					},
+					"response": [
+						{
+							"name": "204 No Content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/users/:user_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"users",
+										":user_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "66cf848c-95bd-44b8-832e-d851ebe946b8"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:39:24 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "User registration, authentication, and profile management endpoints. Includes user CRUD operations and authentication flows."
+		},
+		{
+			"name": "📁 Project Management",
+			"item": [
+				{
+					"name": "Get All Projects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"\r",
+									"// pm.collectionVariables.set(\"access_token\", res['access']);\r",
+									"// pm.collectionVariables.set(\"refresh_token\", res['refresh']);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pr/projects/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"projects",
+								""
+							]
+						},
+						"description": "Retrieves a list of all projects in the system. Shows project details including name, description, owner, and timestamps. Requires authentication."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pr/projects/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"projects",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:23:54 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "567"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"count\": 2,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": \"5f89d260-9051-4a52-b25f-69cd5e5d0173\",\n            \"name\": \"1st test project\",\n            \"description\": \"Hello techforing, how are you doing?\",\n            \"owner\": \"66cf848c-95bd-44b8-832e-d851ebe946b8\",\n            \"created_at\": \"2025-07-13T17:19:17.368640Z\",\n            \"updated_at\": \"2025-07-13T17:19:17.368666Z\"\n        },\n        {\n            \"id\": \"9edc7555-7fa9-4cda-8f9b-54307cceb9da\",\n            \"name\": \"1st test project\",\n            \"description\": \"Hello techforing, how are you doing?\",\n            \"owner\": \"66cf848c-95bd-44b8-832e-d851ebe946b8\",\n            \"created_at\": \"2025-07-13T17:22:37.069195Z\",\n            \"updated_at\": \"2025-07-13T17:22:37.069217Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create New Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"\r",
+									"pm.collectionVariables.set(\"access_token\", res['access']);\r",
+									"pm.collectionVariables.set(\"refresh_token\", res['refresh']);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "1st test project",
+									"description": "Username of the user",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "Hello techforing, how are you doing?",
+									"description": "Password set by the user",
+									"type": "text"
+								},
+								{
+									"key": "owner",
+									"value": "66cf848c-95bd-44b8-832e-d851ebe946b8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/projects/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"projects",
+								""
+							]
+						},
+						"description": "Creates a new project in the system. The authenticated user becomes the project owner. Requires project name, description, and owner ID."
+					},
+					"response": [
+						{
+							"name": "201 Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "1st test project",
+											"description": "Project name (required)",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Hello techforing, how are you doing?",
+											"description": "Project description (required)",
+											"type": "text"
+										},
+										{
+											"key": "owner",
+											"value": "f7d7ffbf-7457-4f7b-b2ad-2923d05a8cfc",
+											"description": "Project owner user ID (required)",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/app/projects/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"app",
+										"projects",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "Content-Length",
+									"value": "257"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 27 Dec 2024 02:18:16 GMT"
+								},
+								{
+									"key": "Ngrok-Agent-Ips",
+									"value": "2a09:bac5:483:1028::19c:16b"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.8"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"b4062c4e-ab34-45fb-89e4-109b2b3821d8\",\n    \"name\": \"1st test project\",\n    \"description\": \"Hello techforing, how are you doing?\",\n    \"owner\": \"f7d7ffbf-7457-4f7b-b2ad-2923d05a8cfc\",\n    \"created_at\": \"2024-12-27T02:18:16.665501Z\",\n    \"updated_at\": \"2024-12-27T02:18:16.665501Z\"\n}"
+						},
+						{
+							"name": "400 Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "1st test project",
+											"description": "Username of the user",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "Hello techforing, how are you doing?",
+											"description": "Password set by the user",
+											"type": "text"
+										},
+										{
+											"key": "owner",
+											"value": "66cf848c-95bd-44b8-832e-d851ebe946b8",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/projects/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"projects",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:24:42 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "36"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": [\n        \"This field is required.\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Project Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pr/projects/:project_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"projects",
+								":project_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "project_id",
+									"value": "9edc7555-7fa9-4cda-8f9b-54307cceb9da"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pr/projects/:project_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"projects",
+										":project_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "project_id",
+											"value": "9edc7555-7fa9-4cda-8f9b-54307cceb9da"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:23:09 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "257"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"9edc7555-7fa9-4cda-8f9b-54307cceb9da\",\n    \"name\": \"1st test project\",\n    \"description\": \"Hello techforing, how are you doing?\",\n    \"owner\": \"66cf848c-95bd-44b8-832e-d851ebe946b8\",\n    \"created_at\": \"2025-07-13T17:22:37.069195Z\",\n    \"updated_at\": \"2025-07-13T17:22:37.069217Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "1st project edited",
+									"description": "Name of the project",
+									"type": "text"
+								},
+								{
+									"key": "owner",
+									"value": "",
+									"description": "Owner of the project",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "Details of the project",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/projects/:project_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"projects",
+								":project_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "project_id",
+									"value": "5f89d260-9051-4a52-b25f-69cd5e5d0173"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "1st project edited",
+											"description": "Name of the project",
+											"type": "text"
+										},
+										{
+											"key": "owner",
+											"value": "",
+											"description": "Owner of the project",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "",
+											"description": "Details of the project",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/projects/:project_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"projects",
+										":project_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "project_id",
+											"value": "5f89d260-9051-4a52-b25f-69cd5e5d0173"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:26:43 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "259"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"5f89d260-9051-4a52-b25f-69cd5e5d0173\",\n    \"name\": \"1st project edited\",\n    \"description\": \"Hello techforing, how are you doing?\",\n    \"owner\": \"66cf848c-95bd-44b8-832e-d851ebe946b8\",\n    \"created_at\": \"2025-07-13T17:19:17.368640Z\",\n    \"updated_at\": \"2025-07-13T17:26:43.862749Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/projects/:project_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"projects",
+								":project_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "project_id",
+									"value": "5f89d260-9051-4a52-b25f-69cd5e5d0173"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "204 No Content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/projects/:project_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"projects",
+										":project_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "project_id",
+											"value": "5f89d260-9051-4a52-b25f-69cd5e5d0173"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:27:12 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "Complete project lifecycle management including creation, retrieval, updates, and deletion. Manage project details, ownership, and team collaboration."
+		},
+		{
+			"name": "📋 Task Management",
+			"item": [
+				{
+					"name": "Get All Tasks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"\r",
+									"// pm.collectionVariables.set(\"access_token\", res['access']);\r",
+									"// pm.collectionVariables.set(\"refresh_token\", res['refresh']);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pr/tasks/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"tasks",
+								""
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pr/tasks/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"tasks",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:31:03 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "915"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"count\": 2,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": \"54689571-0e52-4bff-bd12-ec6c2dee65f4\",\n            \"title\": \"1st test task\",\n            \"description\": \"Hello techforing, you are doing great. I'm very interested to contribute to your team.\",\n            \"status\": \"To Do\",\n            \"priority\": \"Medium\",\n            \"assigned_to\": \"e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab\",\n            \"project\": \"9edc7555-7fa9-4cda-8f9b-54307cceb9da\",\n            \"created_at\": \"2025-07-13T17:29:50.039084Z\",\n            \"updated_at\": \"2025-07-13T17:29:50.039098Z\",\n            \"due_date\": \"2025-08-09T00:00:00Z\"\n        },\n        {\n            \"id\": \"7feff8e4-1a10-4d67-845d-ea9063b9c8c6\",\n            \"title\": \"1st test task\",\n            \"description\": \"Hello techforing, you are doing great. I'm very interested to contribute to your team.\",\n            \"status\": \"To Do\",\n            \"priority\": \"Medium\",\n            \"assigned_to\": \"e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab\",\n            \"project\": \"9edc7555-7fa9-4cda-8f9b-54307cceb9da\",\n            \"created_at\": \"2025-07-13T17:30:32.373048Z\",\n            \"updated_at\": \"2025-07-13T17:30:32.373065Z\",\n            \"due_date\": \"2025-08-09T00:00:00Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create New Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"\r",
+									"pm.collectionVariables.set(\"access_token\", res['access']);\r",
+									"pm.collectionVariables.set(\"refresh_token\", res['refresh']);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "1st test task",
+									"description": "Task title (required)",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Hello techforing, you are doing great. I'm very interested to contribute to your team.",
+									"description": "Task description (required)",
+									"type": "text"
+								},
+								{
+									"key": "assigned_to",
+									"value": "e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab",
+									"description": "User ID to assign the task to (optional)",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "To Do",
+									"description": "Task status: To Do, In Progress, or Done (required)",
+									"type": "text"
+								},
+								{
+									"key": "priority",
+									"value": "Medium",
+									"description": "Task priority: Low, Medium, or High (required)",
+									"type": "text"
+								},
+								{
+									"key": "due_date",
+									"value": "2025-08-09",
+									"description": "Task due date in YYYY-MM-DD format (optional)",
+									"type": "text"
+								},
+								{
+									"key": "project",
+									"value": "9edc7555-7fa9-4cda-8f9b-54307cceb9da",
+									"description": "Project ID where the task belongs (required)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/tasks/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"tasks",
+								""
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "401 Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "1st test task",
+											"description": "Username of the user",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Hello techforing, how are you doing?",
+											"description": "Password set by the user",
+											"type": "text"
+										},
+										{
+											"key": "assigned_to",
+											"value": "f7d7ffbf-7457-4f7b-b2ad-2923d05a8cfc",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "To Do",
+											"type": "text"
+										},
+										{
+											"key": "priority",
+											"value": "Medium",
+											"type": "text"
+										},
+										{
+											"key": "due_date",
+											"value": "2025-01-05",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "project",
+											"value": "b4062c4e-ab34-45fb-89e4-109b2b3821d8",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/app/tasks/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"app",
+										"tasks",
+										""
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "Content-Length",
+									"value": "183"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 27 Dec 2024 02:34:00 GMT"
+								},
+								{
+									"key": "Ngrok-Agent-Ips",
+									"value": "2a09:bac5:483:1028::19c:16b"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.8"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Www-Authenticate",
+									"value": "Bearer realm=\"api\""
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Given token not valid for any token type\",\n    \"code\": \"token_not_valid\",\n    \"messages\": [\n        {\n            \"token_class\": \"AccessToken\",\n            \"token_type\": \"access\",\n            \"message\": \"Token is invalid or expired\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "400 Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "1st test task",
+											"description": "Username of the user",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Hello techforing, how are you doing?",
+											"description": "Password set by the user",
+											"type": "text"
+										},
+										{
+											"key": "assigned_to",
+											"value": "f7d7ffbf-7457-4f7b-b2ad-2923d05a8cfc",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "To Do",
+											"type": "text"
+										},
+										{
+											"key": "priority",
+											"value": "Medium",
+											"type": "text"
+										},
+										{
+											"key": "due_date",
+											"value": "2025-01-05",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "project",
+											"value": "b4062c4e-ab34-45fb-89e4-109b2b3821d8",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/app/tasks/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"app",
+										"tasks",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "Content-Length",
+									"value": "40"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 27 Dec 2024 02:35:03 GMT"
+								},
+								{
+									"key": "Ngrok-Agent-Ips",
+									"value": "2a09:bac5:483:1028::19c:16b"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.8"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"due_date\": [\n        \"This field is required.\"\n    ]\n}"
+						},
+						{
+							"name": "201 Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "1st test task",
+											"description": "Task title (required)",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Hello techforing, you are doing great. I'm very interested to contribute to your team.",
+											"description": "Task description (required)",
+											"type": "text"
+										},
+										{
+											"key": "assigned_to",
+											"value": "e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab",
+											"description": "User ID to assign the task to (optional)",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "To Do",
+											"description": "Task status: To Do, In Progress, or Done (required)",
+											"type": "text"
+										},
+										{
+											"key": "priority",
+											"value": "Medium",
+											"description": "Task priority: Low, Medium, or High (required)",
+											"type": "text"
+										},
+										{
+											"key": "due_date",
+											"value": "2025-08-09",
+											"description": "Task due date in YYYY-MM-DD format (optional)",
+											"type": "text"
+										},
+										{
+											"key": "project",
+											"value": "9edc7555-7fa9-4cda-8f9b-54307cceb9da",
+											"description": "Project ID where the task belongs (required)",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/tasks/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"tasks",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:29:50 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "431"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"54689571-0e52-4bff-bd12-ec6c2dee65f4\",\n    \"title\": \"1st test task\",\n    \"description\": \"Hello techforing, you are doing great. I'm very interested to contribute to your team.\",\n    \"status\": \"To Do\",\n    \"priority\": \"Medium\",\n    \"assigned_to\": \"e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab\",\n    \"project\": \"9edc7555-7fa9-4cda-8f9b-54307cceb9da\",\n    \"created_at\": \"2025-07-13T17:29:50.039084Z\",\n    \"updated_at\": \"2025-07-13T17:29:50.039098Z\",\n    \"due_date\": \"2025-08-09T00:00:00Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Task Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pr/tasks/:task_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"tasks",
+								":task_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "task_id",
+									"value": "7feff8e4-1a10-4d67-845d-ea9063b9c8c6"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pr/tasks/:task_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"tasks",
+										":task_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "task_id",
+											"value": "7feff8e4-1a10-4d67-845d-ea9063b9c8c6"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:32:01 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "431"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"7feff8e4-1a10-4d67-845d-ea9063b9c8c6\",\n    \"title\": \"1st test task\",\n    \"description\": \"Hello techforing, you are doing great. I'm very interested to contribute to your team.\",\n    \"status\": \"To Do\",\n    \"priority\": \"Medium\",\n    \"assigned_to\": \"e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab\",\n    \"project\": \"9edc7555-7fa9-4cda-8f9b-54307cceb9da\",\n    \"created_at\": \"2025-07-13T17:30:32.373048Z\",\n    \"updated_at\": \"2025-07-13T17:30:32.373065Z\",\n    \"due_date\": \"2025-08-09T00:00:00Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "status",
+									"value": "In Progress",
+									"description": "Status of the project (In Progress, To Do, Done)",
+									"type": "text"
+								},
+								{
+									"key": "priority",
+									"value": "",
+									"description": "Midium, High, Low",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "due_date",
+									"value": "",
+									"description": "yr-month-day",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "project",
+									"value": "",
+									"description": "Name of the project",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "Details of the task",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/tasks/:task_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"tasks",
+								":task_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "task_id",
+									"value": "7feff8e4-1a10-4d67-845d-ea9063b9c8c6"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "status",
+											"value": "In Progress",
+											"description": "Status of the project (In Progress, To Do, Done)",
+											"type": "text"
+										},
+										{
+											"key": "priority",
+											"value": "",
+											"description": "Midium, High, Low",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "due_date",
+											"value": "",
+											"description": "yr-month-day",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "project",
+											"value": "",
+											"description": "Name of the project",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "",
+											"description": "Details of the task",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/tasks/:task_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"tasks",
+										":task_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "task_id",
+											"value": "7feff8e4-1a10-4d67-845d-ea9063b9c8c6"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:32:59 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "437"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"7feff8e4-1a10-4d67-845d-ea9063b9c8c6\",\n    \"title\": \"1st test task\",\n    \"description\": \"Hello techforing, you are doing great. I'm very interested to contribute to your team.\",\n    \"status\": \"In Progress\",\n    \"priority\": \"Medium\",\n    \"assigned_to\": \"e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab\",\n    \"project\": \"9edc7555-7fa9-4cda-8f9b-54307cceb9da\",\n    \"created_at\": \"2025-07-13T17:30:32.373048Z\",\n    \"updated_at\": \"2025-07-13T17:32:59.093383Z\",\n    \"due_date\": \"2025-08-09T00:00:00Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/tasks/:task_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"tasks",
+								":task_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "task_id",
+									"value": "99bd07c4-8d14-4a65-995a-4913ef4057d7"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": []
+				}
+			],
+			"description": "Comprehensive task management with status tracking, priority levels, assignments, and due dates. Handle the complete task lifecycle from creation to completion."
+		},
+		{
+			"name": "💬 Comment System",
+			"item": [
+				{
+					"name": "Get All Comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"\r",
+									"// pm.collectionVariables.set(\"access_token\", res['access']);\r",
+									"// pm.collectionVariables.set(\"refresh_token\", res['refresh']);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pr/comments/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"comments",
+								""
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pr/comments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"comments",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:35:46 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "308"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"count\": 1,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": \"18c61706-a286-422e-8bc1-a6321ce41f62\",\n            \"content\": \"Another test comment\",\n            \"user\": \"e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab\",\n            \"task\": \"54689571-0e52-4bff-bd12-ec6c2dee65f4\",\n            \"created_at\": \"2025-07-13T17:35:04.502375Z\",\n            \"updated_at\": \"2025-07-13T17:35:04.502393Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create New Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"\r",
+									"pm.collectionVariables.set(\"access_token\", res['access']);\r",
+									"pm.collectionVariables.set(\"refresh_token\", res['refresh']);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "Another test comment",
+									"description": "Username of the user",
+									"type": "text"
+								},
+								{
+									"key": "task",
+									"value": "54689571-0e52-4bff-bd12-ec6c2dee65f4",
+									"description": "Password set by the user",
+									"type": "text"
+								},
+								{
+									"key": "user",
+									"value": "e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab",
+									"description": "Who is making the user",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/comments/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"comments",
+								""
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "201 Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "content",
+											"value": "Another test comment",
+											"description": "Username of the user",
+											"type": "text"
+										},
+										{
+											"key": "task",
+											"value": "54689571-0e52-4bff-bd12-ec6c2dee65f4",
+											"description": "Password set by the user",
+											"type": "text"
+										},
+										{
+											"key": "user",
+											"value": "e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab",
+											"description": "Who is making the user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/comments/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"comments",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:35:04 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "256"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"18c61706-a286-422e-8bc1-a6321ce41f62\",\n    \"content\": \"Another test comment\",\n    \"user\": \"e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab\",\n    \"task\": \"54689571-0e52-4bff-bd12-ec6c2dee65f4\",\n    \"created_at\": \"2025-07-13T17:35:04.502375Z\",\n    \"updated_at\": \"2025-07-13T17:35:04.502393Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Comment Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/app/comments/:comment_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"app",
+								"comments",
+								":comment_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": "f9ab9949-1de1-42dd-b148-7a649484a686"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/app/comments/:comment_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"app",
+										"comments",
+										":comment_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "comment_id",
+											"value": "f9ab9949-1de1-42dd-b148-7a649484a686"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "Content-Length",
+									"value": "256"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 27 Dec 2024 02:48:57 GMT"
+								},
+								{
+									"key": "Ngrok-Agent-Ips",
+									"value": "2a09:bac5:483:1028::19c:16b"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.8"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"f9ab9949-1de1-42dd-b148-7a649484a686\",\n    \"content\": \"Another test comment\",\n    \"user\": \"f7d7ffbf-7457-4f7b-b2ad-2923d05a8cfc\",\n    \"task\": \"7ab0cdfb-91ff-4366-8a9e-8410bb0f5a2c\",\n    \"created_at\": \"2024-12-27T02:48:03.100589Z\",\n    \"updated_at\": \"2024-12-27T02:48:03.100589Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "Another test comment edited",
+									"description": "Comment's content",
+									"type": "text"
+								},
+								{
+									"key": "user",
+									"value": "",
+									"description": "who is making the comment",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "task",
+									"value": "",
+									"description": "The task under which you are making comment",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/comments/:comment_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"comments",
+								":comment_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": "18c61706-a286-422e-8bc1-a6321ce41f62"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "content",
+											"value": "Another test comment edited",
+											"description": "Comment's content",
+											"type": "text"
+										},
+										{
+											"key": "user",
+											"value": "",
+											"description": "who is making the comment",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "task",
+											"value": "",
+											"description": "The task under which you are making comment",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/comments/:comment_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"comments",
+										":comment_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "comment_id",
+											"value": "18c61706-a286-422e-8bc1-a6321ce41f62"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:37:07 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "263"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"18c61706-a286-422e-8bc1-a6321ce41f62\",\n    \"content\": \"Another test comment edited\",\n    \"user\": \"e8a33c06-e22b-46a1-9b8f-87e3ce54d8ab\",\n    \"task\": \"54689571-0e52-4bff-bd12-ec6c2dee65f4\",\n    \"created_at\": \"2025-07-13T17:35:04.502375Z\",\n    \"updated_at\": \"2025-07-13T17:37:07.114108Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/pr/comments/:comment_id/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pr",
+								"comments",
+								":comment_id",
+								""
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": "18c61706-a286-422e-8bc1-a6321ce41f62"
+								}
+							]
+						},
+						"description": "Gets information about the authenticated user."
+					},
+					"response": [
+						{
+							"name": "204 NO Content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/pr/comments/:comment_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pr",
+										"comments",
+										":comment_id",
+										""
+									],
+									"variable": [
+										{
+											"key": "comment_id",
+											"value": "18c61706-a286-422e-8bc1-a6321ce41f62"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 13 Jul 2025 17:37:34 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.12.3"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "Collaborative commenting system for tasks. Add, view, edit, and delete comments to facilitate team communication and task discussions."
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "X-API-Key",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		}
+	]
+}
