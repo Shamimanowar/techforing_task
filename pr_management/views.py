@@ -1,7 +1,9 @@
 from rest_framework import viewsets
+
 from .models import User, Project, ProjectMember, Task, Comment
 from .serializers import UserSerializer, ProjectSerializer, ProjectMemberSerializer, TaskSerializer, CommentSerializer
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -10,6 +12,8 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action == 'create':
             self.permission_classes = [AllowAny]
+        elif self.action in ['list', ]:
+            self.permission_classes = [IsAdminUser]
         else:
             self.permission_classes = [IsAuthenticated]
         return super().get_permissions()
