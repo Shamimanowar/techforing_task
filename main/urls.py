@@ -1,7 +1,9 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
+
+from django.views.generic.base import RedirectView
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -26,6 +28,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    re_path(r'^$', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path('admin/', admin.site.urls),
     
     path('pr/', include('pr_management.urls')),
