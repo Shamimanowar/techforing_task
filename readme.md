@@ -19,25 +19,6 @@ A Django REST Framework-based project management system that provides comprehens
 - **API Documentation**: drf-yasg (Swagger/OpenAPI)
 - **Admin Interface**: Django Jazzmin theme
 
-## Project Structure
-
-```
-techforing_test/
-├── main/                   # Main Django project settings
-│   ├── settings.py        # Django configuration
-│   ├── urls.py           # Main URL routing
-│   └── wsgi.py           # WSGI configuration
-├── pr_management/         # Core application
-│   ├── models.py         # Database models
-│   ├── serializers.py    # API serializers
-│   ├── views.py          # API views
-│   ├── urls.py           # App URL routing
-├── external/              # External utilities
-│   └── abastacts/        # Base model abstractions
-├── static/               # Static files
-└── manage.py            # Django management script
-```
-
 ## Installation
 
 ### Quick Setup (Recommended)
@@ -71,9 +52,13 @@ If you prefer manual setup:
    cd /path/to/techforing_test
    ```
 
-2. **Activate virtual environment**:
+2. **Activate virtual environment** (linux base OS):
    ```bash
    source env/bin/activate
+   ```
+   For windows
+   ```bash
+   env\Scripts\activate
    ```
 
 3. **Install dependencies**:
@@ -95,6 +80,32 @@ If you prefer manual setup:
    ```bash
    python manage.py runserver
    ```
+
+## Quick API Testing with Postman
+
+**For quick API testing, we highly recommend using the provided Postman collection instead of reading through all the documentation below.**
+
+A complete Postman collection is available in the `postman_doc/` folder:
+- **File**: `TechForing Project Management API.postman_collection.json`
+- **Import**: Simply import this file into Postman
+- **Ready to use**: All endpoints are pre-configured with proper structure
+- **Authentication**: JWT token handling is already set up
+
+**To get started:**
+1. Run `bash setup.sh` to start the project
+2. Import the Postman collection from `postman_doc/` folder
+3. Use the default credentials: `admin` / `admin123`
+4. Start testing APIs immediately
+
+### Alternative: Swagger UI
+
+You can also test APIs directly in your browser using Swagger UI:
+- **URL**: `http://127.0.0.1:8000/swagger/`
+- **Interactive**: Test endpoints directly from the browser
+- **Authentication**: Use the "Authorize" button to add JWT token
+- **No setup required**: Ready to use once the server is running
+
+The detailed documentation below is mainly for reference and advanced configuration.
 
 ## API Endpoints
 
@@ -228,14 +239,3 @@ curl -X POST http://localhost:8000/pr/projects/ \
 curl -X GET http://localhost:8000/pr/tasks/ \
   -H "Authorization: Bearer <token>"
 ```
-
-## Contributing
-
-1. Follow Django and DRF best practices
-2. Maintain proper error handling
-3. Update documentation for new features
-4. Write tests for new functionality
-
-## License
-
-This project is developed for TechForing Ltd.
