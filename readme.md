@@ -73,12 +73,17 @@ If you prefer manual setup or are using Windows:
    python manage.py migrate
    ```
 
-5. **Create superuser** (optional):
+5. **Collect static files**:
+   ```bash
+   python manage.py collectstatic --noinput
+   ```
+
+6. **Create superuser** (optional):
    ```bash
    python manage.py createsuperuser
    ```
 
-6. **Start development server**:
+7. **Start development server**:
    ```bash
    python manage.py runserver
    ```
