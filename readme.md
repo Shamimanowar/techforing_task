@@ -32,7 +32,6 @@ techforing_test/
 │   ├── serializers.py    # API serializers
 │   ├── views.py          # API views
 │   ├── urls.py           # App URL routing
-│   └── authentication.py # Custom JWT authentication
 ├── external/              # External utilities
 │   └── abastacts/        # Base model abstractions
 ├── static/               # Static files
@@ -40,6 +39,32 @@ techforing_test/
 ```
 
 ## Installation
+
+### Quick Setup (Recommended)
+
+For a fast, automated setup, simply run:
+
+```bash
+bash setup.sh
+```
+
+This single command will:
+- Create virtual environment
+- Install all dependencies
+- Set up database and run migrations
+- Create default superuser
+- Start the development server
+
+**Default Superuser Credentials:**
+- Username: `admin`
+- Password: `admin123`
+- Email: `admin@techforing.com`
+
+The server will start automatically at `http://localhost:8000/` with all credentials displayed in the terminal.
+
+### Manual Installation
+
+If you prefer manual setup:
 
 1. **Clone and navigate to the project**:
    ```bash
